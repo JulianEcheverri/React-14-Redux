@@ -1,8 +1,23 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 const Products = () => {
-    return ( 
-        <h1>From products</h1>
-     );
+    return (
+        <Fragment>
+            <h2>Products</h2>
+            <table className="table table-striped">
+                <thead className="bg-primary table-dark">
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+
+            </table>
+        </Fragment>
+    );
 }
- 
+
 export default Products;
