@@ -10,7 +10,7 @@ const NewProduct = () => {
             </h2>
             <form>
               <div className="form-group">
-                <labe>Name</labe>
+                <label>Name</label>
                 <input
                   name="name"
                   type="text"
@@ -19,7 +19,7 @@ const NewProduct = () => {
                 ></input>
               </div>
               <div className="form-group">
-                <labe>Price</labe>
+                <label>Price</label>
                 <input
                   name="Price"
                   type="number"
