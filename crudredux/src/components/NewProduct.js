@@ -1,14 +1,19 @@
 import React, { useState } from "react";
 // Actions
 import { createProductAction } from "../actions/productsActions";
+// Hooks for redux
 // useDispatch --> For using Actions functions
-// useSelector --> For accessing the component's state
+// useSelector --> For accessing store's state
 import { useDispatch, useSelector } from "react-redux";
 
-const NewProduct = () => {
+const NewProduct = ({history}) => {
   // State
   const [name, setName] = useState("");
   const [price, setPrice] = useState(0);
+
+  // Accessing Store's State
+  const loading = useSelector((state) => state.products.loading);
+  const error = useSelector((state) => state.products.error);
 
   // Using useDispatch for creating the function for using Actions
   const dispatch = useDispatch();
@@ -30,6 +35,9 @@ const NewProduct = () => {
       name,
       price,
     });
+
+    // Redirect to home
+    history.push('/');
   };
 
   return (
@@ -70,6 +78,8 @@ const NewProduct = () => {
                 Add new product
               </button>
             </form>
+            { loading ? <p className="text-center">Loading...</p> : null }
+            { error ? <p className="alert alert-danger p2 mt-4 text-center">Something went wrong</p> : null }
           </div>
         </div>
       </div>

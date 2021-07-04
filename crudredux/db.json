@@ -29,6 +29,26 @@
       "name": "Rib Eye",
       "price": 800,
       "id": 6
+    },
+    {
+      "name": "Test",
+      "price": 3,
+      "id": 7
+    },
+    {
+      "name": "Another test",
+      "price": 23,
+      "id": 8
+    },
+    {
+      "name": "Another test 3",
+      "price": 23,
+      "id": 9
+    },
+    {
+      "name": "Test 34",
+      "price": 345,
+      "id": 10
     }
   ]
 }
