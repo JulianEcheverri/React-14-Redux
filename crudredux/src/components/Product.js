@@ -1,14 +1,16 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 // Redux
 import { useDispatch } from "react-redux";
-import { deleteProductAction } from "../actions/productsActions";
+import { deleteProductAction, getProductForEditAction } from "../actions/productsActions";
 import Swal from "sweetalert2";
 
 const Product = ({ product }) => {
   const { id, name, price } = product;
   const dispatch = useDispatch();
+  // Enabling history hook for redirecting to EditProduct component
+  const history = useHistory();
 
   const onDeleteProduct = (id) => {
     // Confirms if the user wants to delete the product
@@ -22,9 +24,15 @@ const Product = ({ product }) => {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
+        // Deletes the product
         dispatch(deleteProductAction(id));
       }
     });
+  };
+
+  const onEditProductRedirect = (product) => {
+    dispatch(getProductForEditAction(product));
+    history.push(`/products/edit/${product.id}`);
   };
 
   return (
@@ -34,9 +42,13 @@ const Product = ({ product }) => {
         <span className="font-weight-bold">${price}</span>
       </td>
       <td className="acciones">
-        <Link to={`/products/edit/${id}`} className="btn btn-primary mr-2">
+        <button 
+          type="button" 
+          className="btn btn-primary mr-2"
+          onClick={() => onEditProductRedirect(product)}
+          >
           Edit
-        </Link>
+        </button>
         <button
           type="button"
           className="btn btn-danger"

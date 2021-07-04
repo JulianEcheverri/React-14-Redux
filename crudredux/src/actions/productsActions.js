@@ -8,6 +8,9 @@ import {
   DELETE_PRODUCT,
   DELETE_PRODUCT_SUCCESS,
   DELETE_PRODUCT_ERROR,
+  GET_EDIT_PRODUCT,
+  EDIT_PRODUCT_SUCCESS,
+  EDIT_PRODUCT_ERROR,
 } from "../types/index.js";
 
 // Axios Client
@@ -15,15 +18,16 @@ import axiosClient from "../config/axios";
 // Sweetalert2
 import Swal from "sweetalert2";
 
-//#region Crate products
+//#region Crate product
 
 export function createProductAction(product) {
   return async (dispatch) => {
     dispatch(addProduct());
     try {
       // Add product to db (json fake)\
-      await axiosClient.post("/products", product);
+      const response = await axiosClient.post("/products", product);
       // Updating the state
+      product.id = response.data.id;
       dispatch(addProductSuccess(product));
 
       Swal.fire("Success", "Product created successful", "success");
@@ -56,7 +60,7 @@ const addProductError = (state) => ({
   type: ADD_PRODUCT_ERROR,
   payload: state,
 });
-//#endregion Crate products
+//#endregion Crate product
 
 //#region Getting products
 export function getProductsAction() {
@@ -120,3 +124,39 @@ const deleteProductError = () => ({
 });
 
 //#endregion Delete product
+
+//#region Edit product
+export function getProductForEditAction(product) {
+  return (dispatch) => {
+    dispatch(getProductForEdit(product));
+  };
+}
+
+const getProductForEdit = (product) => ({
+  type: GET_EDIT_PRODUCT,
+  payload: product,
+});
+
+export function editProductAction(product) {
+  return async (dispatch) => {
+    try {
+      await axiosClient.put(`/products/${product.id}`, product);
+      dispatch(editProductSuccess(product));
+    } catch (error) {
+      console.log(error);
+      dispatch(editProductError(true));
+    }
+  };
+}
+
+const editProductSuccess = (product) => ({
+  type: EDIT_PRODUCT_SUCCESS,
+  payload: product,
+});
+
+const editProductError = (error) => ({
+  type: EDIT_PRODUCT_ERROR,
+  payload: error,
+});
+
+//#endregion Edit product
