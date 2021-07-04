@@ -1,10 +1,13 @@
 import {
-    ADD_PRODUCT,
-    ADD_PRODUCT_SUCCESS,
-    ADD_PRODUCT_ERROR,
-    GET_PRODUCTS,
-    GET_PRODUCTS_SUCCESS,
-    GET_PRODUCTS_ERROR
+  ADD_PRODUCT,
+  ADD_PRODUCT_SUCCESS,
+  ADD_PRODUCT_ERROR,
+  GET_PRODUCTS,
+  GET_PRODUCTS_SUCCESS,
+  GET_PRODUCTS_ERROR,
+  DELETE_PRODUCT,
+  DELETE_PRODUCT_SUCCESS,
+  DELETE_PRODUCT_ERROR,
 } from "../types/index.js";
 
 // Axios Client
@@ -12,73 +15,108 @@ import axiosClient from "../config/axios";
 // Sweetalert2
 import Swal from "sweetalert2";
 
-// Crate products
-export function createProductAction(product) {
-    return async (dispatch) => {
-        dispatch(addProduct());
-        try {
-            // Add product to db (json fake)\
-            await axiosClient.post("/products", product);
-            // Updating the state
-            dispatch(addProductSuccess(product));
+//#region Crate products
 
-            Swal.fire("Success", "Product created successful", "success");
-        } catch (error) {
-            console.log(error);
-            dispatch(addProductError(true));
-            Swal.fire({
-                icon: "error",
-                title: "Something went wrong",
-                text: "Cannot create product",
-            });
-        }
-    };
+export function createProductAction(product) {
+  return async (dispatch) => {
+    dispatch(addProduct());
+    try {
+      // Add product to db (json fake)\
+      await axiosClient.post("/products", product);
+      // Updating the state
+      dispatch(addProductSuccess(product));
+
+      Swal.fire("Success", "Product created successful", "success");
+    } catch (error) {
+      console.log(error);
+      dispatch(addProductError(true));
+      Swal.fire({
+        icon: "error",
+        title: "Something went wrong",
+        text: "Cannot create product",
+      });
+    }
+  };
 }
 
 // Saving product
 const addProduct = () => ({
-    type: ADD_PRODUCT,
-    payload: true,
+  type: ADD_PRODUCT,
+  payload: true,
 });
 
 // When product is saved successful
 const addProductSuccess = (product) => ({
-    type: ADD_PRODUCT_SUCCESS,
-    payload: product,
+  type: ADD_PRODUCT_SUCCESS,
+  payload: product,
 });
 
 // Error saving product
 const addProductError = (state) => ({
-    type: ADD_PRODUCT_ERROR,
-    payload: state,
+  type: ADD_PRODUCT_ERROR,
+  payload: state,
 });
+//#endregion Crate products
 
-
-// Getting products
+//#region Getting products
 export function getProductsAction() {
-    return async (dispatch) => {
-        dispatch(getProducts());
-        try {
-            const response = await axiosClient.get('/products');
-            dispatch(getProductsSuccess(response.data));
-        } catch (error) {
-            console.log(error);
-            dispatch(getProductsError());
-        }
+  return async (dispatch) => {
+    dispatch(getProducts());
+    try {
+      const response = await axiosClient.get("/products");
+      dispatch(getProductsSuccess(response.data));
+    } catch (error) {
+      console.log(error);
+      dispatch(getProductsError());
     }
+  };
 }
 
 const getProducts = () => ({
-    type: GET_PRODUCTS,
-    payload: true
+  type: GET_PRODUCTS,
+  payload: true,
 });
 
 const getProductsSuccess = (products) => ({
-    type: GET_PRODUCTS_SUCCESS,
-    payload: products
+  type: GET_PRODUCTS_SUCCESS,
+  payload: products,
 });
 
 const getProductsError = () => ({
-    type: GET_PRODUCTS_ERROR,
-    payload: true
+  type: GET_PRODUCTS_ERROR,
+  payload: true,
 });
+
+//#endregion Getting products
+
+//#region Delete product
+
+export function deleteProductAction(id) {
+  return async (dispatch) => {
+    dispatch(deleteProduct(id));
+    try {
+      await axiosClient.delete(`/products/${id}`);
+      dispatch(deleteProductSuccess());
+      Swal.fire("Deleted!", "Product has been deleted.", "success");
+    } catch (error) {
+      console.log(error);
+      dispatch(deleteProductError());
+    }
+  };
+}
+
+const deleteProduct = (id) => ({
+  type: DELETE_PRODUCT,
+  payload: id,
+});
+
+const deleteProductSuccess = () => ({
+  type: DELETE_PRODUCT_SUCCESS,
+});
+
+const deleteProductError = () => ({
+  type: DELETE_PRODUCT_ERROR,
+  payload: true,
+});
+
+//#endregion Delete product
