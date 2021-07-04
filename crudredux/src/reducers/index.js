@@ -1,8 +1,10 @@
 // We can create many reducers as we want, but they should be combined as a unique reducer for the application
 import { combineReducers } from "redux";
 // Reducers
-import productsReducer from "./productsReducer";
+import productReducer from "./productReducer";
+import alertReducer from "./alertReducer";
 
 export default combineReducers({
-    products: productsReducer
+  products: productReducer,
+  alert: alertReducer,
 });

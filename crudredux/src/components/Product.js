@@ -3,7 +3,7 @@ import { useHistory } from "react-router-dom";
 
 // Redux
 import { useDispatch } from "react-redux";
-import { deleteProductAction, getProductForEditAction } from "../actions/productsActions";
+import { deleteProductAction, getProductForEditAction } from "../actions/productActions";
 import Swal from "sweetalert2";
 
 const Product = ({ product }) => {

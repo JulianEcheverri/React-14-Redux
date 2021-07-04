@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect } from "react";
 // Actions
-import { getProductsAction } from "../actions/productsActions";
+import { getProductsAction } from "../actions/productActions";
 // Redux
 import { useDispatch, useSelector } from "react-redux";
 // Components

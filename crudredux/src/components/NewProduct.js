@@ -1,19 +1,21 @@
 import React, { useState } from "react";
 // Actions
-import { createProductAction } from "../actions/productsActions";
+import { createProductAction } from "../actions/productActions";
+import { showAlertAction, hideAlertAction } from "../actions/alertActions";
 // Hooks for redux
 // useDispatch --> For using Actions functions
 // useSelector --> For accessing store's state
 import { useDispatch, useSelector } from "react-redux";
 
-const NewProduct = ({history}) => {
+const NewProduct = ({ history }) => {
   // State
   const [name, setName] = useState("");
   const [price, setPrice] = useState(0);
 
-  // Accessing Store's State
+  // Accessing Store's States
   const loading = useSelector((state) => state.products.loading);
   const error = useSelector((state) => state.products.error);
+  const alert = useSelector((state) => state.alert.alert);
 
   // Using useDispatch for creating the function for using Actions
   const dispatch = useDispatch();
@@ -27,8 +29,16 @@ const NewProduct = ({history}) => {
 
     // Form validation
     if (name.trim() === "" || price <= 0) {
+      const alert = {
+        msg: "All fields are required",
+        classes: "alert alert-danger text-center text-uppercase p3",
+      };
+      dispatch(showAlertAction(alert));
       return;
     }
+
+    // Hiding alert
+    dispatch(hideAlertAction(alert));
 
     // Creates product
     addProduct({
@@ -37,7 +47,7 @@ const NewProduct = ({history}) => {
     });
 
     // Redirect to home
-    history.push('/');
+    history.push("/");
   };
 
   return (
@@ -48,6 +58,7 @@ const NewProduct = ({history}) => {
             <h2 className="text-center mb-4 font-weight-bold">
               Create Product
             </h2>
+            {alert ? <p className={alert.classes}>{alert.msg}</p> : null}
             <form onSubmit={onCreateNewProduct}>
               <div className="form-group">
                 <label>Name</label>
@@ -78,8 +89,12 @@ const NewProduct = ({history}) => {
                 Add new product
               </button>
             </form>
-            { loading ? <p className="text-center">Loading...</p> : null }
-            { error ? <p className="alert alert-danger p2 mt-4 text-center">Something went wrong</p> : null }
+            {loading ? <p className="text-center">Loading...</p> : null}
+            {error ? (
+              <p className="alert alert-danger p2 mt-4 text-center">
+                Something went wrong
+              </p>
+            ) : null}
           </div>
         </div>
       </div>
