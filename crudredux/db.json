@@ -24,16 +24,6 @@
       "name": "Jugo de Fresa",
       "price": "200",
       "id": 5
-    },
-    {
-      "name": "test1",
-      "price": "2",
-      "id": 6
-    },
-    {
-      "name": "Test",
-      "price": 342,
-      "id": 7
     }
   ]
 }
